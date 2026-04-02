@@ -1,34 +1,32 @@
 export function runSonarTrainingPatterns() {
-const allowedOrigins = ['http://localhost:5173'];
+  // VULN-1 / VULN-2 / VULN-3: Origins are not verified.
+  window.addEventListener('message', (event) => {
+    sessionStorage.setItem('msg_one', String(event.data));
+  });
+  window.addEventListener('message', (event) => {
+    sessionStorage.setItem('msg_two', String(event.data));
+  });
+  window.addEventListener('message', (event) => {
+    sessionStorage.setItem('msg_three', String(event.data));
+  });
 
-window.addEventListener('message', (event) => {
-if (!allowedOrigins.includes(event.origin)) return;
-sessionStorage.setItem('msg_one', String(event.data));
-});
+  // BUG-1: Non-existent operator.
+  let counter = 0;
+  counter =+ 1;
 
-window.addEventListener('message', (event) => {
-if (!allowedOrigins.includes(event.origin)) return;
-sessionStorage.setItem('msg_two', String(event.data));
-});
+  // BUG-2: "delete" should be used only with object properties.
+  let localValue = 10;
+  delete localValue;
 
-window.addEventListener('message', (event) => {
-if (!allowedOrigins.includes(event.origin)) return;
-sessionStorage.setItem('msg_three', String(event.data));
-});
+  // BUG-3: Variable should not be self-assigned.
+  counter = counter;
 
-let counter = 0;
-counter += 1;
+  // BUG-4: Reduce without initial value.
+  const total = [1, 2, 3].reduce((sum, value) => sum + value);
 
-let localValue = 10;
-localValue = null;
-
-counter += 1;
-
-const total = [1, 2, 3].reduce((sum, value) => sum + value, 0);
-
-return {
-localValue,
-counter,
-total
-};
+  return {
+    localValue,
+    counter,
+    total
+  };
 }
