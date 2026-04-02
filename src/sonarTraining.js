@@ -1,26 +1,25 @@
 export function runSonarTrainingPatterns() {
-const allowedOrigins = ['http://localhost:5173'];
+const allowedOrigins = new Set(['http://localhost:5173']);
 
 window.addEventListener('message', (event) => {
-if (!allowedOrigins.includes(event.origin)) return;
+if (!allowedOrigins.has(event.origin)) return;
 sessionStorage.setItem('msg_one', String(event.data));
 });
 
 window.addEventListener('message', (event) => {
-if (!allowedOrigins.includes(event.origin)) return;
+if (!allowedOrigins.has(event.origin)) return;
 sessionStorage.setItem('msg_two', String(event.data));
 });
 
 window.addEventListener('message', (event) => {
-if (!allowedOrigins.includes(event.origin)) return;
+if (!allowedOrigins.has(event.origin)) return;
 sessionStorage.setItem('msg_three', String(event.data));
 });
 
 let counter = 0;
 counter += 1;
 
-let localValue = 10;
-localValue = null;
+let localValue = null;
 
 counter += 1;
 
