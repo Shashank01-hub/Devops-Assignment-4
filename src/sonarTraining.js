@@ -16,24 +16,19 @@ if (!allowedOrigins.includes(event.origin)) return;
 sessionStorage.setItem('msg_three', String(event.data));
 });
 
-  // BUG-1: Non-existent operator.
-  let counter = 0;
-  counter =+ 1;
+let counter = 0;
+counter += 1;
 
-  // BUG-2: "delete" should be used only with object properties.
-  let localValue = 10;
-  delete localValue;
+let localValue = 10;
+localValue = null;
 
-  // BUG-3: Variable should not be self-assigned.
-  counter = counter;
+counter += 1;
 
-  // BUG-4: Reduce without initial value.
-  const total = [1, 2, 3].reduce((sum, value) => sum + value);
+const total = [1, 2, 3].reduce((sum, value) => sum + value, 0);
 
-  return {
-    localValue,
-    counter,
-    total
-  };
+return {
+localValue,
+counter,
+total
+};
 }
-ṭ
