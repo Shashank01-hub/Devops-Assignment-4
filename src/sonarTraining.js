@@ -1,14 +1,20 @@
 export function runSonarTrainingPatterns() {
-  // VULN-1 / VULN-2 / VULN-3: Origins are not verified.
-  window.addEventListener('message', (event) => {
-    sessionStorage.setItem('msg_one', String(event.data));
-  });
-  window.addEventListener('message', (event) => {
-    sessionStorage.setItem('msg_two', String(event.data));
-  });
-  window.addEventListener('message', (event) => {
-    sessionStorage.setItem('msg_three', String(event.data));
-  });
+const allowedOrigins = ['http://localhost:5173'];
+
+window.addEventListener('message', (event) => {
+if (!allowedOrigins.includes(event.origin)) return;
+sessionStorage.setItem('msg_one', String(event.data));
+});
+
+window.addEventListener('message', (event) => {
+if (!allowedOrigins.includes(event.origin)) return;
+sessionStorage.setItem('msg_two', String(event.data));
+});
+
+window.addEventListener('message', (event) => {
+if (!allowedOrigins.includes(event.origin)) return;
+sessionStorage.setItem('msg_three', String(event.data));
+});
 
   // BUG-1: Non-existent operator.
   let counter = 0;
@@ -30,3 +36,4 @@ export function runSonarTrainingPatterns() {
     total
   };
 }
+ṭ
