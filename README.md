@@ -1,16 +1,30 @@
-# React + Vite
+# Todo React Project (SonarQube Practice)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Simple ReactJS todo app with:
+- Add task
+- View pending tasks
+- Delete task
+- Mark task as done
+- Completed tasks shown in a separate list
 
-Currently, two official plugins are available:
+## Run
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+```bash
+npm install
+npm run dev
+```
 
-## React Compiler
+## Intentional Issues Included
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+This project intentionally includes exactly 7 issues for manual fixing with SonarQube.
 
-## Expanding the ESLint configuration
+### Bugs (4)
+1. `BUG-1` in `src/components/TodoForm.jsx`: invalid input validation allows empty task creation.
+2. `BUG-2` in `src/components/TodoList.jsx`: unstable list key uses array index.
+3. `BUG-3` in `src/App.jsx`: task id generation can create duplicates.
+4. `BUG-4` in `src/App.jsx`: delete logic compares against array index instead of task id.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### Vulnerabilities (3)
+1. `VULN-1` in `src/components/TaskItem.jsx`: unsanitized `dangerouslySetInnerHTML` usage.
+2. `VULN-2` in `src/App.jsx`: dynamic execution using `eval`.
+3. `VULN-3` in `src/App.jsx`: untrusted open redirect via user-provided URL.

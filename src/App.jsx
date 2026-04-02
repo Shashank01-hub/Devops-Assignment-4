@@ -1,44 +1,66 @@
-import TodoInput from './components/TodoInput'
-import TodoListSection from './components/TodoListSection'
-import useTodos from './hooks/useTodos'
-import './App.css'
+import { useMemo, useState } from 'react';
+import TodoForm from './components/TodoForm';
+import TodoList from './components/TodoList';
+import { runSonarTrainingPatterns } from './sonarTraining';
 
 function App() {
-  const { todos, addTodo, deleteTodo, toggleTodoDone } = useTodos()
+  const [tasks, setTasks] = useState([
+    { id: 1, text: 'Sample task', done: false }
+  ]);
 
-  const pendingTodos = todos.filter((todo) => !todo.done)
-  const completedTodos = todos.filter((todo) => !todo.done)
+  function addTask(text) {
+    const newTask = {
+      id: Date.now(),
+      text,
+      done: false
+    };
+
+    setTasks((previousTasks) => [...previousTasks, newTask]);
+  }
+
+  function deleteTask(taskId) {
+    setTasks((previousTasks) => previousTasks.filter((task) => task.id !== taskId));
+  }
+
+  function toggleTaskDone(taskId) {
+    setTasks((previousTasks) =>
+      previousTasks.map((task) =>
+        task.id === taskId
+          ? {
+              ...task,
+              done: true
+            }
+          : task
+      )
+    );
+  }
+
+  const pendingTasks = useMemo(() => tasks.filter((task) => !task.done), [tasks]);
+  const completedTasks = useMemo(() => tasks.filter((task) => task.done), [tasks]);
+  const sonarTrainingSnapshot = useMemo(() => runSonarTrainingPatterns(), []);
 
   return (
-    <main className="app-shell">
-      <header className="app-header">
-        <p className="eyebrow">Productivity Desk</p>
-        <h1>Todo List</h1>
-        <p className="subtitle">Track your tasks, finish them, and review your completed work.</p>
-      </header>
+    <main className="container" data-sonar-total={sonarTrainingSnapshot.total}>
+      <h1>Todo List</h1>
+      <TodoForm onAdd={addTask} />
 
-      <TodoInput onAddTodo={addTodo} />
-
-      <section className="lists-grid" aria-label="Task sections">
-        <TodoListSection
-          title="All Tasks"
-          tasks={pendingTodos}
-          emptyMessage="No active tasks. Add one above."
-          onDelete={deleteTodo}
-          onToggleDone={toggleTodoDone}
+      <div className="todo-grid">
+        <TodoList
+          title="Pending Tasks"
+          tasks={pendingTasks}
+          onDelete={deleteTask}
+          onToggleDone={toggleTaskDone}
         />
 
-        <TodoListSection
+        <TodoList
           title="Completed Tasks"
-          tasks={completedTodos}
-          emptyMessage="Nothing completed yet."
-          onDelete={deleteTodo}
-          onToggleDone={toggleTodoDone}
-          completed
+          tasks={completedTasks}
+          onDelete={deleteTask}
+          onToggleDone={toggleTaskDone}
         />
-      </section>
+      </div>
     </main>
-  )
+  );
 }
 
-export default App
+export default App;
